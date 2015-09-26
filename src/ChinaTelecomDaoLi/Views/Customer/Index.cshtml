@@ -1,0 +1,44 @@
+@model IEnumerable<CustomerDetail>
+<h2>用户明细</h2>
+<form class="search">
+    检索：
+    <input type="text" name="Begin" class="textbox w-0-8 datetime" placeholder="发布时间(大于)" value="@Request.QueryString["Begin"]" />
+    <input type="submit" class="btn" value="检索" />
+</form>
+<table class="table">
+	<thead>
+		<tr>
+			<th>接入号</th>
+			<th>用户状态</th>
+			<th>用户姓名</th>
+			<th>四级承包人名称</th>
+			<th>四级承包体名称</th>
+			<th>当月出账</th>
+			<th>代理费</th>
+			<th>一次佣金</th>
+			<th>欠费</th>
+			<th>装机地址</th>
+			<th>标准地址</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach(var x in Model)
+		{
+			<tr>
+				<td>@x.Account</td>
+				<td>@x.Status</td>
+				<td>@x.CustomerName</td>
+				<td>@x.ContractorName</td>
+				<td>@x.ContractorStruct</td>
+				<td>@x.CurrentMonthBill</td>
+				<td>@x.AgentFee</td>
+				<td>@x.Commission</td>
+				<td>@x.Arrearage</td>
+				<td>@x.ImplementAddress</td>
+				<td>@x.StandardAddress</td>
+			</tr>
+		}
+	</tbody>
+</table>
+
+@Html.MakePager("pager-item", "active", "pager")

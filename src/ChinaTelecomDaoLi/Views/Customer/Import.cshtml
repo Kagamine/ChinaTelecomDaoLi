@@ -1,0 +1,15 @@
+<h2>导入明细</h2>
+
+<form asp-action="Import" asp-controller="Customer" method="post" enctype="multipart/form-data">
+	<table class="detail-table">
+		<tr>
+			<td>导入文件</td>
+			<td>
+				<input type="file" name="file" /> 支持 .xls / .xlsx
+			</td>
+		</tr>
+	</table>
+	<p>
+		<input type="submit" value="导入" />
+	</p>
+</form>

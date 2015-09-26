@@ -1,0 +1,45 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - 中国电信</title>
+    <link href="~/Styles/icons.css" rel="stylesheet" />
+    <link href="~/Styles/datetimepicker.css" rel="stylesheet" />
+    <link href="~/Styles/Site.css" rel="stylesheet" type="text/css" />
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/ckeditor/ckeditor.js"></script>
+    <script src="~/Scripts/codecomb.cascade-1.0.3.min.js"></script>
+    <script src="~/Scripts/jquery.datetimepicker.js"></script>
+    <script src="~/Scripts/site.js"></script>
+    <!--[if lte IE 7]>
+    <script src="/Scripts/json2.js"></script>
+    <![endif]-->
+    <!--[if lte IE 9]>
+    <script type="text/javascript" src="/Scripts/excanvas.js"></script>
+    <script src="/Scripts/jplaceholder.js"></script>
+    <script src="/Scripts/pie.js"></script>
+    <![endif]-->
+    <!--[if lte IE 6]>
+    <script src="/Scripts/png.js"></script>
+    <![endif]-->
+</head>
+<body>
+    <div class="left-sidebar">
+        <div class="sidebar-subtitle">中国电信</div>
+        <a asp-action="Index" asp-controller="Home"><div class="sidebar-menu"><i class="fa fa-home icon ico"></i>后台首页</div></a>
+        <div class="sidebar-subtitle">用户明细</div>
+        <a asp-action="Index" asp-controller="Customer"><div class="sidebar-menu"><i class="fa fa-sitemap icon ico"></i>用户明细</div></a>
+        <a asp-action="Import" asp-controller="Customer"><div class="sidebar-menu"><i class="fa fa-sitemap icon ico"></i>导入明细</div></a>
+        <div class="sidebar-subtitle">其他操作</div>
+        <a href="javascript: $('#frmLogout').submit()"><div class="sidebar-menu"><i class="fa fa-sign-out icon ico"></i>退出系统</div></a>
+        <form asp-action="Logout" asp-controller="Account" method="post" id="frmLogout"></form>
+    </div>
+    <div class="container">
+        <div class="wrap-cont">
+            @RenderBody()
+            <div class="footer">Copyright © 2015 Harbin Code Comb Technology Co., Ltd. All rights reserved.</div>
+        </div>
+    </div>
+</body>
+</html>
