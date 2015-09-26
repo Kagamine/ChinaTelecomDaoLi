@@ -17,9 +17,34 @@ namespace ChinaTelecomDaoLi.Controllers
     [Authorize]
     public class CustomerController : BaseController
     {
-        public IActionResult Index()
+        public IActionResult Index(string ContractorName, Status? Status, string Address)
         {
-            var ret = DB.CustomerDetails.AsNoTracking();
+            IEnumerable<CustomerDetail> ret = DB.CustomerDetails.AsNoTracking();
+            if (!string.IsNullOrEmpty(ContractorName))
+                ret = ret.Where(x => x.ContractorName == ContractorName);
+            if (Status.HasValue)
+                ret = ret.Where(x => x.Status == Status);
+            if (!string.IsNullOrEmpty(Address))
+            {
+                var keywords = DB.SameAreaRuleDetails
+                    .Include(x => x.Rule)
+                    .ThenInclude(x => x.Details)
+                    .Where(x => x.Key.Contains(Address))
+                    .Select(x => x.Key)
+                    .ToList();
+                
+                ret = ret.ToList().Where(x => 
+                {
+                    if (x.ImplementAddress.Contains(Address))
+                        return true;
+                    foreach (var y in keywords)
+                        if (x.ImplementAddress.Contains(y))
+                            return true;
+                    return false;
+                });
+            }
+            ViewBag.Statuses = ret.Select(x => x.Status).Distinct().ToList();
+            ViewBag.ContractorNames = ret.Select(x => x.ContractorName).Distinct().ToList();
             return PagedView(ret);
         }
         
@@ -112,6 +137,11 @@ namespace ChinaTelecomDaoLi.Controllers
                 conn.Close();
             });
             return RedirectToAction("Importing", "Customer");
+        }
+
+        public IActionResult Importing()
+        {
+            return View();
         }
     }
 }

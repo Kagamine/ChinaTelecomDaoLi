@@ -10,6 +10,9 @@ namespace ChinaTelecomDaoLi.Models
     public class DaoliContext : IdentityDbContext<User>
     {
         public DbSet<CustomerDetail> CustomerDetails { get; set; }
+        public DbSet<SameAreaRule> SameAreaRules { get; set; }
+        public DbSet<SameAreaRuleDetail> SameAreaRuleDetails { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -29,6 +32,11 @@ namespace ChinaTelecomDaoLi.Models
                 //e.Index(x => x.StandardAddress);
                 e.Index(x => x.Status);
                 //e.Index(x => x.Commission);
+            });
+
+            builder.Entity<SameAreaRuleDetail>(e =>
+            {
+                e.Index(x => x.Key);
             });
         }
     }
