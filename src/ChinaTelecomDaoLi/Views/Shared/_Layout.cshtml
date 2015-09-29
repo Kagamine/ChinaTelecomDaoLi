@@ -36,6 +36,7 @@
         <div class="sidebar-subtitle">规则设定</div>
         <a asp-action="Address" asp-controller="Rule"><div class="sidebar-menu"><i class="fa fa-sitemap icon ico"></i>地址规则</div></a>
         <div class="sidebar-subtitle">其他操作</div>
+        <a asp-action="Password" asp-controller="Account"><div class="sidebar-menu"><i class="fa fa-sitemap icon ico"></i>修改密码</div></a>
         <a href="javascript: $('#frmLogout').submit()"><div class="sidebar-menu"><i class="fa fa-sign-out icon ico"></i>退出系统</div></a>
         <form asp-action="Logout" asp-controller="Account" method="post" id="frmLogout"></form>
     </div>
