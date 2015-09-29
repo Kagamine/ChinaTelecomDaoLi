@@ -1,9 +1,35 @@
 @model IEnumerable<CustomerDetail>
-<h2>用户明细</h2>
+@{
+    ViewBag.Title = "用户明细";
+}
+<h2>@ViewBag.Title</h2>
 <form class="search">
+    <input type="hidden" value="false" name="raw" />
     检索：
-    <input type="text" name="Begin" class="textbox w-0-8 datetime" placeholder="发布时间(大于)" value="@Request.QueryString["Begin"]" />
-    <input type="submit" class="btn" value="检索" />
+	<select name="ContractorName">
+		@foreach (string x in ViewBag.ContractorNames)
+        {
+            <option value="">客户经理</option>
+			<!option @(Context.Request.Query["ContractorName"] == x ? "selected" : "")>@x</!option>
+		}
+	</select>
+    <select name="Status">
+        <option value="">状态</option>
+        @foreach (string x in ViewBag.Statuses)
+        {
+			<!option @(Context.Request.Query["Status"] == x ? "selected" : "")>@x</!option>
+        }
+    </select>
+    <select name="Set">
+        <option value="">套餐</option>
+        @foreach (string x in ViewBag.Sets)
+        {
+			<!option @(Context.Request.Query["Set"] == x ? "selected" : "")>@x</!option>
+        }
+    </select>
+	<input type="text" class="textbox" placeholder="地址" name="Address" />
+    <input type="submit" class="btn" value="检索" id="btnSearch" />
+    <input type="button" class="btn" value="导出" id="btnExport" />
 </form>
 <table class="table">
 	<thead>
@@ -18,7 +44,8 @@
 			<th>一次佣金</th>
 			<th>欠费</th>
 			<th>装机地址</th>
-			<th>标准地址</th>
+            <th>标准地址</th>
+            <th>套餐</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -35,10 +62,23 @@
 				<td>@x.Commission</td>
 				<td>@x.Arrearage</td>
 				<td>@x.ImplementAddress</td>
-				<td>@x.StandardAddress</td>
+                <td>@x.StandardAddress</td>
+                <td>@x.Set</td>
 			</tr>
 		}
 	</tbody>
 </table>
 
 @Html.MakePager("pager-item", "active", "pager")
+
+<script>
+    $('#btnSearch').click(function ()
+    {
+        $('input[name="raw"]').val("false");
+    });
+    $('#btnExport').click(function ()
+    {
+        $('input[name="raw"]').val("true");
+        $('form').submit();
+    });
+</script>

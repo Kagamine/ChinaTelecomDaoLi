@@ -32,6 +32,7 @@ namespace ChinaTelecomDaoLi.Models
                 //e.Index(x => x.StandardAddress);
                 e.Index(x => x.Status);
                 //e.Index(x => x.Commission);
+                e.Index(x => x.Set);
             });
 
             builder.Entity<SameAreaRuleDetail>(e =>

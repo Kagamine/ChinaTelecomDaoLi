@@ -17,13 +17,15 @@ namespace ChinaTelecomDaoLi.Controllers
     [Authorize]
     public class CustomerController : BaseController
     {
-        public IActionResult Index(string ContractorName, Status? Status, string Address)
+        public IActionResult Index(string ContractorName, Status? Status, string Address, string Set, string raw)
         {
             IEnumerable<CustomerDetail> ret = DB.CustomerDetails.AsNoTracking();
             if (!string.IsNullOrEmpty(ContractorName))
                 ret = ret.Where(x => x.ContractorName == ContractorName);
             if (Status.HasValue)
                 ret = ret.Where(x => x.Status == Status);
+            if (!string.IsNullOrEmpty(Set))
+                ret = ret.Where(x => x.Set == Set);
             if (!string.IsNullOrEmpty(Address))
             {
                 var keywords = DB.SameAreaRuleDetails
@@ -43,9 +45,18 @@ namespace ChinaTelecomDaoLi.Controllers
                     return false;
                 });
             }
-            ViewBag.Statuses = ret.Select(x => x.Status).Distinct().ToList();
-            ViewBag.ContractorNames = ret.Select(x => x.ContractorName).Distinct().ToList();
-            return PagedView(ret);
+
+            if (raw != "true")
+            {
+                ViewBag.Statuses = DB.CustomerDetails.Select(x => x.Status.ToString()).Distinct().ToList();
+                ViewBag.ContractorNames = DB.CustomerDetails.Select(x => x.ContractorName).Distinct().ToList();
+                ViewBag.Sets = DB.CustomerDetails.Select(x => x.Set).Distinct().ToList();
+                return PagedView(ret);
+            }
+            else
+            {
+                return XlsView(ret.ToList(), "chinatelecom.xls", "Xls");
+            }
         }
         
         [HttpGet]
@@ -107,6 +118,7 @@ namespace ChinaTelecomDaoLi.Controllers
                                     detail.Arrearage = reader[9] == DBNull.Value ? 0 : Convert.ToDouble(reader[9]);
                                     detail.ImplementAddress = reader[10].ToString();
                                     detail.StandardAddress = reader[11].ToString();
+                                    detail.Set = reader[12].ToString();
                                 }
                                 else
                                 {
@@ -122,7 +134,8 @@ namespace ChinaTelecomDaoLi.Controllers
                                         Commission = reader[8] == DBNull.Value ? 0 : Convert.ToDouble(reader[8]),
                                         Arrearage = reader[9] == DBNull.Value ? 0 : Convert.ToDouble(reader[9]),
                                         ImplementAddress = reader[10].ToString(),
-                                        StandardAddress = reader[11].ToString()
+                                        StandardAddress = reader[11].ToString(),
+                                        Set = reader[12].ToString()
                                     });
                                 }
                             }
@@ -142,6 +155,47 @@ namespace ChinaTelecomDaoLi.Controllers
         public IActionResult Importing()
         {
             return View();
+        }
+
+        public IActionResult SetPie()
+        {
+            return View();
+        }
+
+        public IActionResult ContractorPie()
+        {
+            return View();
+        }
+
+        public IActionResult GetContractorPie()
+        {
+            var ret = DB.CustomerDetails
+                .GroupBy(x => x.ContractorName)
+                .Select(x => new object[] { $"[{x.Count()}]{x.Key}", x.Count() })
+                .ToList();
+            return Json(ret);
+        }
+
+        public IActionResult GetSetPie()
+        {
+            var tmp = DB.CustomerDetails
+                .GroupBy(x => x.Set)
+                .Select(x => new object[] { $"[{x.Count()}]{x.Key}", x.Count() })
+                .ToList();
+            var total = 0;
+            foreach (var x in tmp)
+                total += (int)x[1];
+            var ret = new List<object[]>();
+            var cnt = 0;
+            foreach (var x in tmp)
+            {
+                if ((int)x[1] >= total * 0.01)
+                    ret.Add(x);
+                else
+                    cnt += (int)x[1];
+            }
+            ret.Add(new object[] { "其他", cnt });
+            return Json(ret);
         }
     }
 }

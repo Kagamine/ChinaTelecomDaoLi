@@ -1,0 +1,39 @@
+﻿@model IEnumerable<CustomerDetail>
+@{
+    Layout = null;
+}
+<table>
+    <tr>
+        <td>接入号</td>
+        <td>用户状态</td>
+        <td>用户姓名</td>
+        <td>四级承包人名称</td>
+        <td>四级承包体名称</td>
+        <td>当月出账</td>
+        <td>中投</td>
+        <td>代理费</td>
+        <td>一次佣金</td>
+        <td>欠费</td>
+        <td>装机地址</td>
+        <td>标准地址</td>
+        <td>套餐</td>
+    </tr>
+    @foreach(var x in Model)
+    { 
+        <tr>
+            <td>@x.Account</td>
+            <td>@x.Status</td>
+            <td>@x.CustomerName</td>
+            <td>@x.ContractorName</td>
+            <td>@x.ContractorStruct</td>
+            <td>@x.CurrentMonthBill</td>
+            <td></td>
+            <td>@x.AgentFee</td>
+            <td>@x.Commission</td>
+            <td>@x.Arrearage</td>
+            <td>@x.ImplementAddress</td>
+            <td>@x.StandardAddress</td>
+            <td>@x.Set</td>
+        </tr>
+    }
+</table>

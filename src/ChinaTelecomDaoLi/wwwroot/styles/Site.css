@@ -182,6 +182,10 @@ a.dark:focus, a.dark:hover {
 
 .detail-table {
     width: 100%;
+    table-layout: auto;
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
 }
 
 .detail-table td {
@@ -195,10 +199,6 @@ a.dark:focus, a.dark:hover {
 }
 
 table {
-    table-layout: auto;
-    width: 100%;
-    border-collapse: collapse;
-    border-spacing: 0;
 }
 
 .textbox {
@@ -460,6 +460,9 @@ select {
 
 .table {
     table-layout: auto;
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
 }
 
 .table th {
@@ -569,4 +572,8 @@ img {
 ul {
     list-style: none;
     margin: 0;
+}
+
+li a{
+    color: #fff!important;
 }

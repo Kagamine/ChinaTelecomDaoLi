@@ -25,7 +25,7 @@ namespace ChinaTelecomDaoLi.Models
 
         public DateTime ImportedTime { get; set; }
         
-        [MaxLength(128)]
+        [MaxLength(64)]
         public string Account { get; set; }
 
         public Status Status { get; set; }
@@ -47,10 +47,13 @@ namespace ChinaTelecomDaoLi.Models
         
         public double Commission { get; set; }
 
-        [MaxLength(2048)]
+        [MaxLength(256)]
         public string ImplementAddress { get; set; }
 
-        [MaxLength(2048)]
+        [MaxLength(256)]
         public string StandardAddress { get; set; }
+
+        [MaxLength(64)]
+        public string Set { get; set; }
     }
 }
