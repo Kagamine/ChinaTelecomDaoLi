@@ -28,14 +28,18 @@ namespace ChinaTelecomDaoLi.Controllers
                 ret = ret.Where(x => x.Set == Set);
             if (!string.IsNullOrEmpty(Address))
             {
-                var keywords = DB.SameAreaRuleDetails
-                    .Include(x => x.Rule)
-                    .ThenInclude(x => x.Details)
+                var tmp = DB.SameAreaRuleDetails
                     .Where(x => x.Key.Contains(Address))
-                    .Select(x => x.Key)
-                    .ToList();
-                
-                ret = ret.ToList().Where(x => 
+                    .FirstOrDefault();
+
+                var keywords = new List<string>();
+                if (tmp != null)
+                    keywords = DB.SameAreaRuleDetails
+                        .Where(x => x.RuleId == tmp.RuleId)
+                        .Select(x => x.Key)
+                        .ToList();
+
+                ret = ret.ToList().Where(x =>
                 {
                     if (x.ImplementAddress.Contains(Address))
                         return true;
@@ -66,6 +70,7 @@ namespace ChinaTelecomDaoLi.Controllers
         }
         
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Import(IFormFile file)
         {
             var env = Resolver.GetService<IApplicationEnvironment>();

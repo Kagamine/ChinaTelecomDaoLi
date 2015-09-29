@@ -33,6 +33,8 @@
         <a asp-action="Import" asp-controller="Customer"><div class="sidebar-menu"><i class="fa fa-sitemap icon ico"></i>导入明细</div></a>
         <a asp-action="SetPie" asp-controller="Customer"><div class="sidebar-menu"><i class="fa fa-sitemap icon ico"></i>套餐饼图</div></a>
         <a asp-action="ContractorPie" asp-controller="Customer"><div class="sidebar-menu"><i class="fa fa-sitemap icon ico"></i>客户经理饼图</div></a>
+        <div class="sidebar-subtitle">规则设定</div>
+        <a asp-action="Address" asp-controller="Rule"><div class="sidebar-menu"><i class="fa fa-sitemap icon ico"></i>地址规则</div></a>
         <div class="sidebar-subtitle">其他操作</div>
         <a href="javascript: $('#frmLogout').submit()"><div class="sidebar-menu"><i class="fa fa-sign-out icon ico"></i>退出系统</div></a>
         <form asp-action="Logout" asp-controller="Account" method="post" id="frmLogout"></form>

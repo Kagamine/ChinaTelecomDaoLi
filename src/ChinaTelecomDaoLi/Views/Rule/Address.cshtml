@@ -1,0 +1,53 @@
+﻿@model IEnumerable<SameAreaRule>
+@{ 
+    ViewBag.Title = "地址规则";
+}
+
+<h2>@ViewBag.Title</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>地址</th>
+            <th>管理</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var x in Model)
+        {
+            <tr>
+                <td>
+                    @foreach(var y in x.Details)
+                    {
+                        @(y.Key + " ")
+                    }
+                </td>
+                <td>
+                    <a href="javascript:Delete(@x.Id)">删除规则</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<form asp-action="DeleteAddress" asp-controller="Rule" method="post" id="frmDeleteAddress">
+    <input type="hidden" name="id" id="ruleId" />
+</form>
+<script>
+    function Delete(id)
+    {
+        $('#ruleId').val(id);
+        $('#frmDeleteAddress').submit();
+    }
+</script>
+<br />
+<h3>添加规则</h3>
+<form asp-action="Address" asp-controller="Rule" method="post">
+    <table class="detail-table">
+        <tr>
+            <td>规则</td>
+            <td>
+                <textarea name="addresses" style="width: 100%; height: 200px;" placeholder="每行输入一个地址匹配规则"></textarea>
+            </td>
+        </tr>
+    </table>
+    <p><input class="btn" type="submit" value="添加" /></p>
+</form>

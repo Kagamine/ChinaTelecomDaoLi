@@ -17,6 +17,7 @@ namespace ChinaTelecomDaoLi.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(string username, string password)
         {
             var result = await SignInManager.PasswordSignInAsync(username, password, true, false);
@@ -36,6 +37,25 @@ namespace ChinaTelecomDaoLi.Controllers
         {
             await SignInManager.SignOutAsync();
             return RedirectToAction("Login", "Account");
+        }
+
+        [HttpGet]
+        public IActionResult Password()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Password(string oldpwd, string newpwd, string confirm)
+        {
+            if (confirm != newpwd)
+                return Content("两次密码输入不一致");
+            var result = await UserManager.ChangePasswordAsync(CurrentUser, oldpwd, newpwd);
+            if (result.Succeeded)
+                return Content("密码修改成功");
+            else
+                return Content(result.Errors.First().Description);
         }
     }
 }
